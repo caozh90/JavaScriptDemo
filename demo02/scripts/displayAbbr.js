@@ -31,4 +31,61 @@ function displayAbbreviations(){
 	document.body.appendChild(dlist);
 }
 
-window.onload = displayAbbreviations;
+function displayCitations(){
+	if(!document.getElementsByTagName || !document.createElement|| !document.createTextNode) return false;
+	var quotes = document.getElementsByTagName("blockquote");
+	for(var i=0;i<quotes.length;i++){
+		if(!quotes[i].getAttribute("cite")){
+			continue;
+		}
+		var url = quotes[i].getAttribute("cite");
+		var quoteChildren = quotes[i].getElementsByTagName("*");
+		if(quoteChildren.length<1) continue;
+		var elem = quoteChildren[quoteChildren.length-1];
+		var link = document.createElement("a");
+		var link_text = document.createTextNode("source");
+		link.appendChild(link_text);
+		link.setAttribute("href", url);
+		var superscript = document.createElement("sup");
+		superscript.appendChild(link);
+		elem.appendChild(superscript);
+	}
+}
+
+
+function displayAccesskeys(){
+	if(!document.getElementsByTagName||!document.createElement||!document.createTextNode) return false;
+	var links = document.getElementsByTagName("a");
+	var akeys = new Array();
+	for(var i=0;i<links.length;i++){
+		var current_link = links[i];
+		if(!current_link.getAttribute("accesskey")) continue;
+		var key = current_link.getAttribute("accesskey");
+		var text = current_link.lastChild.nodeValue;
+		akeys[key] = text;
+	}
+	var list = document.createElement("ul");
+	for(key in akeys){
+		var text = akeys[key];
+		var str = key + ":" + text;
+		var item = document.createElement("li");
+		var item_text = document.createTextNode(str);
+		item.appendChild(item_text);
+		list.appendChild(item);
+	}
+	var header = document.createElement("h3");
+	var header_text = document.createTextNode("AccessKey");
+	header.appendChild(header_text);
+	document.body.appendChild(header);
+	document.body.appendChild(list);
+}
+
+//accesskey = 1  home
+//accesskey = 2  回退到前一页
+//accesskey = 4  打开本网站的搜索表单/页面
+//accesskey = 9  本网站的联系方法
+//accesskey = 0  查看本网站的快速访问清单
+
+addLoadEvent(displayAbbreviations);
+addLoadEvent(displayCitations);
+addLoadEvent(displayAccesskeys);
