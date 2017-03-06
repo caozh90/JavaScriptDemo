@@ -21,6 +21,10 @@ th{
 	background-color: #9cc;
 	color: #000;
 }
+th, td{
+	width: 10em;
+	padding: .5em;
+}
 abbr{
 	text-decoration: none;
 	border: 0;
